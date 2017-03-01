@@ -1,0 +1,13 @@
+<template name="appSidebar">
+
+    <aside class="main-sidebar">
+        <ul class="sidebar-menu nav">
+            <li class="{{isActiveRoute 'App.home'}}">
+                <a href="{{pathFor 'App.home'}}"> <i class="fa fa-home"></i> <span>Home</span> </a>
+            </li>
+            <li class="{{isActiveRoute 'App.stations'}}">
+                <a href="{{pathFor 'App.stations'}}"> <i class="fa fa-subway"></i> <span>Stations</span> </a>
+            </li>
+        </ul>
+    </aside>
+</template>
