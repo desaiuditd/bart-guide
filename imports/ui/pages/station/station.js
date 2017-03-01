@@ -19,6 +19,8 @@ Template.App_station.onRendered(() => {
     if(err) {
       return;
     }
-    Session.set('station', response.data.root.stations[0].station[0]);
+    const station = response.data.root.stations[0].station[0];
+    station.county[0] = station.county[0].charAt(0).toUpperCase() + station.county[0].slice(1);
+    Session.set('station', station);
   });
 });
