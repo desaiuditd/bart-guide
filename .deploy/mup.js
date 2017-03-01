@@ -19,6 +19,7 @@ module.exports = {
       serverOnly: true,
     },
     env: {
+      PORT: '3000',
       ROOT_URL: 'https://bart.incognitech.in',
       MONGO_URL: 'mongodb://localhost/meteor',
     },
