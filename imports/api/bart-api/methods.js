@@ -29,3 +29,31 @@ Meteor.method('getStations', function () {
   // },
   httpMethod: 'get',
 });
+
+Meteor.method('getStation', function (stn_abbr) {
+  const f = new Future();
+
+  BART_API.getStation(stn_abbr, function (xmlResponse) {
+
+    XML_PARSER.getJSON(xmlResponse, function (jsonResponse) {
+
+      f.return(jsonResponse);
+
+    });
+
+  });
+
+  return f.wait();
+}, {
+  url: '/api/station',
+  getArgsFromRequest: function (req) {
+    let stn_abbr = '';
+
+    if(req.query && req.query.source && typeof req.query.source == 'string' && req.query.source.length > 0) {
+      stn_abbr = req.query.source;
+    }
+
+    return [stn_abbr];
+  },
+  httpMethod: 'get',
+});
