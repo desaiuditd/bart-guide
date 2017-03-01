@@ -7,6 +7,7 @@ import '../../ui/pages/home/home.js';
 import '../../ui/pages/privacy/privacy.js';
 import '../../ui/pages/terms/terms.js';
 import '../../ui/pages/stations/stations.js';
+import '../../ui/pages/station/station.js';
 import '../../ui/pages/not-found/not-found.js';
 
 // Set up all routes in the app
@@ -30,10 +31,18 @@ FlowRouter.route('/terms-of-use', {
     BlazeLayout.render('App_body', { main: 'App_terms' });
   },
 });
+
 FlowRouter.route('/stations', {
   name: 'App.stations',
   action() {
     BlazeLayout.render('App_body', { main: 'App_stations' });
+  },
+});
+
+FlowRouter.route('/station/:stn_abbr', {
+  name: 'App.station',
+  action() {
+    BlazeLayout.render('App_body', { main: 'App_station' });
   },
 });
 

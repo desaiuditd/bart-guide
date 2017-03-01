@@ -1,0 +1,15 @@
+<template name="App_station">
+    {{#if station}}
+        {{#with station}}
+            <h1 class="page-header">{{name}}, {{city}} <span class="text-muted">({{abbr}})</span></h1>
+            <address>
+                {{address}}<br />
+                {{city}}<br />
+                {{county}}<br />
+                {{state}} - {{zipcode}}
+            </address>
+        {{/with}}
+    {{else}}
+        <p class="text-warning bg-warning text">Oops! No station found!</p>
+    {{/if}}
+</template>

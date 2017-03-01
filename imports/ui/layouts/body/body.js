@@ -2,6 +2,7 @@ import './body.html';
 
 Template.App_body.onRendered(() => {
   $('body').addClass('sidebar-mini skin-bart fixed');
+  $('.content-wrapper').css('margin-bottom', $('.navbar-fixed-bottom').outerHeight());
 });
 
 Template.App_body.events({

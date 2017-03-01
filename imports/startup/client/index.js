@@ -5,3 +5,5 @@ import '../../ui/js/bootstrap/bootstrap.js';
 import '../../ui/js/pushmenu.js';
 
 import './routes.js';
+
+import './common-helpers.js';

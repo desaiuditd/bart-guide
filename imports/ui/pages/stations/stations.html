@@ -1,22 +1,43 @@
 <template name="App_stations">
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="list-group">
-                <a href="#" class="list-group-item">Cras justo odio</a>
-                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                <a href="#" class="list-group-item">Morbi leo risus</a>
-                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-            </div>
+    {{#if stations}}
+        <div class="row">
+            {{#if isMobile}}
+                <div class="list-group">
+                    {{#each stations}}
+                        <a href="{{pathFor 'App.station' stn_abbr=abbr}}" class="list-group-item">{{name}}, {{city}}</a>
+                    {{/each}}
+                </div>
+            {{else}}
+                {{#if getFirstColumnStations}}
+                    <div class="col-sm-4">
+                        <div class="list-group">
+                            {{#each getFirstColumnStations}}
+                                <a href="{{pathFor 'App.station' stn_abbr=abbr}}" class="list-group-item">{{name}}, {{city}}</a>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+                {{#if getSecondColumnStations}}
+                    <div class="col-sm-4">
+                        <div class="list-group">
+                            {{#each getSecondColumnStations}}
+                                <a href="{{pathFor 'App.station' stn_abbr=abbr}}" class="list-group-item">{{name}}, {{city}}</a>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+                {{#if getThirdColumnStations}}
+                    <div class="col-sm-4">
+                        <div class="list-group">
+                            {{#each getThirdColumnStations}}
+                                <a href="{{pathFor 'App.station' stn_abbr=abbr}}" class="list-group-item">{{name}}, {{city}}</a>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+            {{/if}}
         </div>
-        <div class="col-sm-6">
-            <div class="list-group">
-                <a href="#" class="list-group-item">Cras justo odio</a>
-                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                <a href="#" class="list-group-item">Morbi leo risus</a>
-                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-            </div>
-        </div>
-    </div>
+    {{else}}
+        <p class="text-warning bg-warning text">Oops! No stations found!</p>
+    {{/if}}
 </template>

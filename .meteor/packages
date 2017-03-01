@@ -33,3 +33,5 @@ simple:rest
 simple:json-routes
 http
 peerlibrary:xml2js
+session
+raix:handlebar-helpers
