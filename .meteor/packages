@@ -36,3 +36,4 @@ peerlibrary:xml2js
 session
 raix:handlebar-helpers
 dburles:google-maps
+u2622:persistent-session
