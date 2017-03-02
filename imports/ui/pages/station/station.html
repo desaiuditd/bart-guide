@@ -1,13 +1,51 @@
 <template name="App_station">
     {{#if station}}
         {{#with station}}
-            <h1 class="page-header">{{name}}, {{city}} <span class="text-muted">({{abbr}})</span></h1>
-            <address>
-                {{address}}<br />
-                {{city}}<br />
-                {{county}}<br />
-                {{state}} - {{zipcode}}
-            </address>
+            <h1 class="page-header">
+                <a href="{{link}}" target="_blank">
+                    {{name}}, {{city}} <span class="text-muted">({{abbr}})</span>
+                </a>
+            </h1>
+            <div class="row">
+                <div class="col-sm-3">
+                    <address>
+                        {{address}}<br />
+                        {{city}}<br />
+                        {{county}}<br />
+                        {{state}} - {{zipcode}}
+                    </address>
+                </div>
+                <div class="col-sm-5">
+                    <div class="map-container">
+                        {{> googleMap name="stationMap" options=stationMapOptions}}
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            <div class="row">
+                <div class="col-sm-4">
+                    <ul>
+                        <li><strong>Introduction: </strong> {{{intro}}}</li>
+                        <li><strong>Attraction: </strong> {{{attraction}}}</li>
+                        <li><strong>Food: </strong> {{{food}}}</li>
+                        <li><strong>Shopping: </strong> {{{shopping}}}</li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <ul>
+                        <li><strong>Platform Info: </strong> {{{platform_info}}}</li>
+                        <li><strong>North Platform: </strong> {{north_platforms}}</li>
+                        <li><strong>South Platform: </strong> {{south_platforms}}</li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <ul>
+                        <li><strong>Routes</strong></li>
+                        <li><strong>North Routes: </strong> {{north_routes}}</li>
+                        <li><strong>South Routes: </strong> {{south_routes}}</li>
+                    </ul>
+                </div>
+            </div>
         {{/with}}
     {{else}}
         <p class="text-warning bg-warning">

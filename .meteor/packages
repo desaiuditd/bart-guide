@@ -35,3 +35,4 @@ http
 peerlibrary:xml2js
 session
 raix:handlebar-helpers
+dburles:google-maps
