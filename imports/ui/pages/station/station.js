@@ -13,7 +13,7 @@ Template.App_station.helpers({
   },
   stationMapOptions: function() {
     // Make sure the maps API has loaded
-    if (typeof GoogleMaps !== 'undefined' && GoogleMaps.loaded()) {
+    if (GoogleMaps.loaded()) {
 
       const station = Session.get('station');
 
@@ -46,14 +46,34 @@ Template.App_station.onRendered(() => {
 
     Session.set('station', station);
 
-    if (typeof GoogleMaps !== 'undefined') {
+    if (typeof GoogleMaps.maps.stationMap === 'undefined') {
+
       GoogleMaps.ready('stationMap', function(map) {
+
+        var position = new google.maps.LatLng(station.gtfs_latitude[0], station.gtfs_longitude[0]);
+
         // Add a marker to the map once it's ready
         var marker = new google.maps.Marker({
-          position: map.options.center,
+          position: position,
           map: map.instance
         });
+
+        map.instance.panTo(position);
+
       });
+
+    } else {
+
+      var position = new google.maps.LatLng(station.gtfs_latitude[0], station.gtfs_longitude[0]);
+
+      // Add a marker to the map once it's ready
+      var marker = new google.maps.Marker({
+        position: position,
+        map: GoogleMaps.maps.stationMap.instance
+      });
+
+      GoogleMaps.maps.stationMap.instance.panTo(position);
+
     }
   });
 });
