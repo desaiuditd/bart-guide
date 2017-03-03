@@ -1,0 +1,38 @@
+<template name="App_trips">
+    <h1 class="page-header">BART Trip</h1>
+    <p class="bg-info text-info">
+        - Select Source Station & Destination Station.<br />
+        - We will get you all the scheduled routes with real-time updates.
+    </p>
+    <br />
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="source">Source</label>
+            <select class="form-control" id="source">
+                <option value="">Select Source Station</option>
+                {{#each stations}}
+                    <option value="{{abbr}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group hidden-xs hidden-sm">
+            <label>&nbsp;</label>
+        </div>
+        <div class="form-group">
+            <label for="destination">Destination</label>
+            <select class="form-control" id="destination">
+                <option value="">Select Destination Station</option>
+                {{#each stations}}
+                    <option value="{{abbr}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group hidden-xs hidden-sm">
+            <label>&nbsp;</label>
+        </div>
+        <div class="form-group">
+            <a href="#" id="btn-trip-go" class="btn btn-primary">Go!</a>
+            <i class="bart-spinner hide fa fa-spinner fa-spin fa-fw"></i>
+        </div>
+    </form>
+</template>

@@ -34,6 +34,7 @@ Template.App_stations.helpers({
 Template.App_stations.onRendered(() => {
   HTTP.get('/api/stations/', function (err, response) {
     if(err) {
+      console.log(err);
       return;
     }
     Session.set('stations', response.data.root.stations[0].station);

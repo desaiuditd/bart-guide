@@ -33,6 +33,7 @@ Template.App_station.onRendered(() => {
   HTTP.get('/api/station/?source='+stn_abbr, function (err, response) {
 
     if(err) {
+      console.log(err);
       return;
     }
 

@@ -8,6 +8,7 @@ import '../../ui/pages/privacy/privacy.js';
 import '../../ui/pages/terms/terms.js';
 import '../../ui/pages/stations/stations.js';
 import '../../ui/pages/station/station.js';
+import '../../ui/pages/trips/trips.js';
 import '../../ui/pages/not-found/not-found.js';
 
 // Set up all routes in the app
@@ -45,6 +46,13 @@ FlowRouter.route('/station/:stn_abbr', {
     BlazeLayout.render('App_body', { main: 'App_station' });
   },
 });
+
+FlowRouter.route('/trips', {
+  name: 'App.trips',
+  action() {
+    BlazeLayout.render('App_body', { main: 'App_trips' });
+  },
+})
 
 FlowRouter.notFound = {
   action() {
