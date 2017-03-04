@@ -37,4 +37,39 @@ export const BART_API = {
     );
 
   },
+  getRealTimeEstimates: function (stn_abbr, callback) {
+
+    const params = BART_API_CONFIG.endpoints.getRealTimeEstimates.params;
+    params.orig = stn_abbr;
+
+    HTTP.get(BART_API_CONFIG.endpoints.getRealTimeEstimates.url, {
+        params: params,
+      }, function (err, response) {
+        if (err) {
+          throw new Meteor.Error(err);
+        } else {
+          callback(response.content);
+        }
+      }
+    );
+
+  },
+  getScheduledTrips: function (src, dest, callback) {
+
+    const params = BART_API_CONFIG.endpoints.getScheduledTrips.params;
+    params.orig = src;
+    params.dest = dest;
+
+    HTTP.get(BART_API_CONFIG.endpoints.getScheduledTrips.url, {
+        params: params,
+      }, function (err, response) {
+        if (err) {
+          throw new Meteor.Error(err);
+        } else {
+          callback(response.content);
+        }
+      }
+    );
+
+  },
 };

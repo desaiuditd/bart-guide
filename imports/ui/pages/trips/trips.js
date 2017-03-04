@@ -28,6 +28,7 @@ Template.App_trips.onRendered(() => {
     return;
   });
 
+  Session.set('tripData', {});
 });
 
 Template.App_trips.events({
@@ -63,16 +64,16 @@ Template.App_trips.events({
       return;
     }
 
-    $('.bart-spinner').removeClass('hide').addClass('show');
+    const preHTML = $('#btn-trip-go').html();
+    $('#btn-trip-go').prop('disabled', 'disabled').html('<i class="fa fa-spinner fa-spin fa-fw"></i>');
 
-    HTTP.get('/api/trips/', function (err, response) {
+    HTTP.get('/api/trips/' + source + '/' + destination + '/', function (err, response) {
       if(err) {
         console.log(err);
       } else {
-
+        Session.set('tripData', response.data);
       }
-      $('.bart-spinner').removeClass('show').addClass('hide');
-      return;
+      $('#btn-trip-go').prop('disabled', false).html(preHTML);
     });
   },
 });
