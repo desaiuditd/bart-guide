@@ -221,7 +221,7 @@ Template.App_trips.onRendered(() => {
       $('#btn-trip-go').click();
     }
 
-  }, 30000)
+  }, 30000);
 });
 
 let bartDirectionsDisplay = null;
