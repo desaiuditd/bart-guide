@@ -112,6 +112,35 @@ Template.App_trips.helpers({
 
     return markup;
   },
+  realTimeEstimates: function () {
+    const tripData = Session.get('tripData');
+    return tripData.realTimeEstimates.root.station[0].etd;
+  },
+  getRealTimeEstimateMinutes: function (minutes) {
+    if (minutes === 'Leaving') {
+      return 'Leaving';
+    }
+    return '<span class="real-time-remained">' + minutes + '</span> minutes';
+  },
+  getRealTimeCountdown: function (minutes) {
+    if (minutes === 'Leaving') {
+      return '';
+    }
+    const tripData = Session.get('tripData');
+    const realTimestamp = tripData.realTimeEstimates.root.date[0] + ' ' + tripData.realTimeEstimates.root.time;
+    const realDate = moment(realTimestamp, 'MM-DD-YYYY HH:mm:ss').add(parseInt(minutes), 'minutes');
+    return '<span data-countdown="' + moment(realDate).format('YYYY/MM/DD HH:mm:ss') + '"></span>';
+  },
+  initCountdown: function () {
+    setTimeout(function () {
+      $('[data-countdown]').each(function() {
+        var $this = $(this), finalDate = $(this).data('countdown');
+        $this.countdown(finalDate, function(event) {
+          $this.html(event.strftime('%H:%M:%S'));
+        });
+      });
+    }, 100);
+  },
   legend: function () {
     const tripData = Session.get('tripData');
     return tripData.scheduledTrips.root.message[0].legend;

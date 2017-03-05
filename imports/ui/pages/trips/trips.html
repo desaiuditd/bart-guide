@@ -40,6 +40,36 @@
                 <strong>On </strong> {{realDate}}
                 <strong>Departing Around </strong> {{realTime}}
             </div>
+
+            {{#if realTimeEstimates}}
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="jumbotron real-time-jumbotron">
+                        <h3 class="text-center">Real Time Train Estimates</h3>
+                        <div class="table-responsive lead">
+                            <table class="table">
+                                {{#each realTimeEstimates}}
+                                    <tr>
+                                        <td>{{destination}}</td>
+                                        <td>
+                                            <span class="real-time-line-{{estimate.[0].hexcolor.[0]}}">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{{getRealTimeEstimateMinutes estimate.[0].minutes.[0]}}}
+                                            ({{{getRealTimeCountdown estimate.[0].minutes.[0]}}})
+                                            {{initCountdown}}
+                                        </td>
+                                        <td>({{estimate.[0].length}} cars)</td>
+                                        <td>From Platform {{estimate.[0].platform}}</td>
+                                    </tr>
+                                {{/each}}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+
             <div class="col-sm-10 col-sm-offset-1">
                 {{#each trips}}
                     <div class="jumbotron">

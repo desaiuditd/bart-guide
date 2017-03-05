@@ -32,6 +32,7 @@ fortawesome:fontawesome@4.7.0
 fourseven:scss@4.5.0
 geojson-utils@1.0.10
 hb5:meteor-is.js@0.0.1
+hilios:jquery.countdown@2.0.4
 hot-code-push@1.0.4
 html-tools@1.0.11
 htmljs@1.0.11
