@@ -4,14 +4,13 @@
         - Select Source Station & Destination Station.<br />
         - We will get you all the scheduled routes with real-time updates.
     </p>
-    <br />
     <form class="form-inline">
         <div class="form-group">
             <label for="source">Source</label>
-            <select class="form-control" id="source">
+            <select class="form-control" id="source" name="source">
                 <option value="">Select Source Station</option>
                 {{#each stations}}
-                    <option value="{{abbr}}">{{name}}</option>
+                    <option value="{{abbr}}" {{isSourceSelected abbr}}>{{name}}</option>
                 {{/each}}
             </select>
         </div>
@@ -20,10 +19,10 @@
         </div>
         <div class="form-group">
             <label for="destination">Destination</label>
-            <select class="form-control" id="destination">
+            <select class="form-control" id="destination" name="destination">
                 <option value="">Select Destination Station</option>
                 {{#each stations}}
-                    <option value="{{abbr}}">{{name}}</option>
+                    <option value="{{abbr}}" {{isDestinationSelected abbr}}>{{name}}</option>
                 {{/each}}
             </select>
         </div>
@@ -31,7 +30,70 @@
             <label>&nbsp;</label>
         </div>
         <div class="form-group">
-            <button type="button" id="btn-trip-go" class="btn btn-primary form-control">Go!</button>
+            <button type="submit" id="btn-trip-go" class="btn btn-primary form-control">Go!</button>
         </div>
     </form>
+    <br />
+    {{#if tripData}}
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 lead">
+                <strong>On </strong> {{realDate}}
+                <strong>Departing Around </strong> {{realTime}}
+            </div>
+            <div class="col-sm-10 col-sm-offset-1">
+                {{#each trips}}
+                    <div class="jumbotron">
+                        <div class="row">
+                            {{{tripMarkup this}}}
+                            <div class="col-sm-1">
+                                <div class="row">
+                                    <a href="#" class="btn-sm btn-block btn-info viewTripMap text-center"
+                                       data-toggle="modal" data-target="#tripMapModal"
+                                       data-trip-index="{{@index}}">View Map</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+            <div class="col-sm-10 col-sm-offset-1">
+                <!--{{#if legend}}-->
+                    <!--<p class="bg-info text-info">{{{legend}}}</p>-->
+                <!--{{/if}}-->
+                {{#if co2emission}}
+                    <p class="bg-info text-info">{{{co2emission}}}</p>
+                {{/if}}
+                {{#if specialSchedule}}
+                    <p class="bg-info text-info">{{{specialSchedule}}}</p>
+                {{/if}}
+            </div>
+        </div>
+    {{else}}
+        <p class="text-warning bg-warning text-center hide trip-message">
+            <i class="fa fa-spinner fa-3x fa-spin"></i><br /><br />
+            Hold on ! We are fetching trip details for you. <br />
+            If it takes too long then, Oops! We did not find any trip details for you!
+        </p>
+    {{/if}}
+
+    <!-- Modal -->
+    <div class="modal fade" id="tripMapModal" tabindex="-1" role="dialog" aria-labelledby="tripMapModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="tripMapModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="map-container">
+                        {{> googleMap name="tripMap" options=tripMapOptions}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>

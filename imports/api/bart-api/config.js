@@ -35,5 +35,12 @@ export const BART_API_CONFIG = {
         key: 'MW9S-E7SL-26DU-VV8V',
       },
     },
+    getRoute: {
+      url: 'http://api.bart.gov/api/route.aspx',
+      params: {
+        cmd: 'routeinfo',
+        key: 'MW9S-E7SL-26DU-VV8V',
+      }
+    }
   },
 };

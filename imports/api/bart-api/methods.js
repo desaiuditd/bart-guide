@@ -9,16 +9,11 @@ import Future from 'fibers/future'
 
 Meteor.method('getStations', function () {
 
+  const stationsXML = BART_API.getAllStations();
+
   const f = new Future();
-
-  BART_API.getAllStations(function (xmlResponse) {
-
-    XML_PARSER.getJSON(xmlResponse, function (jsonResponse) {
-
-      f.return(jsonResponse);
-
-    });
-
+  XML_PARSER.getJSON(stationsXML, function (stationsJSON) {
+    f.return(stationsJSON);
   });
 
   return f.wait();
@@ -32,16 +27,11 @@ Meteor.method('getStations', function () {
 
 Meteor.method('getStation', function (stn_abbr) {
 
+  const stationXML = BART_API.getStation(stn_abbr);
+
   const f = new Future();
-
-  BART_API.getStation(stn_abbr, function (xmlResponse) {
-
-    XML_PARSER.getJSON(xmlResponse, function (jsonResponse) {
-
-      f.return(jsonResponse);
-
-    });
-
+  XML_PARSER.getJSON(stationXML, function (stationJSON) {
+    f.return(stationJSON);
   });
 
   return f.wait();
@@ -61,33 +51,26 @@ Meteor.method('getStation', function (stn_abbr) {
 
 Meteor.method('getTrips', function (src, dest) {
 
-  const f = new Future();
+  const mainFuture = new Future();
 
-  const response = {};
+  let response = {};
 
-  BART_API.getScheduledTrips(src, dest, function (xmlResponse) {
+  const scheduledXML = BART_API.getScheduledTrips(src, dest);
 
-    XML_PARSER.getJSON(xmlResponse, function (jsonResponse) {
+  XML_PARSER.getJSON(scheduledXML, function (scheduledJSON) {
 
-      response.scheduledTrips = jsonResponse;
+    response.scheduledTrips = scheduledJSON;
 
-      BART_API.getRealTimeEstimates(response.origin, function (xmlRes) {
+    const realTimeXML = BART_API.getRealTimeEstimates(src);
 
-        XML_PARSER.getJSON(xmlRes, function (jsonRes) {
-
-          response.realTimeEstimates = jsonRes;
-
-          f.return(response);
-
-        });
-
-      });
-
+    XML_PARSER.getJSON(realTimeXML, function (realTimeJSON) {
+      response.realTimeEstimates = realTimeJSON;
+      mainFuture.return(response);
     });
 
   });
 
-  return f.wait();
+  return mainFuture.wait();
 }, {
   url: '/api/trips/:src/:dest',
   getArgsFromRequest: function (req) {
@@ -105,4 +88,105 @@ Meteor.method('getTrips', function (src, dest) {
     return [src, dest];
   },
   httpMethod: 'get',
+});
+
+Meteor.method('getTrainHeadStationData', function (scheduledTrips) {
+
+  const allLegs = [];
+  lodash.each(scheduledTrips.root.schedule[0].request[0].trip, function (trip) {
+    lodash.each(trip.leg, function (leg) {
+      allLegs.push(leg);
+    });
+  });
+
+  allLegs.push({
+    $: {
+      trainHeadStation: scheduledTrips.root.origin[0],
+    }
+  });
+
+  allLegs.push({
+    $: {
+      trainHeadStation: scheduledTrips.root.destination[0],
+    }
+  });
+
+  lodash.each(scheduledTrips.root.schedule[0].request[0].trip, function (trip) {
+    lodash.each(trip.leg, function (leg) {
+      allLegs.push({
+        $: {
+          trainHeadStation: leg.$.destination,
+        }
+      });
+    });
+  });
+
+  const futures = lodash.map(allLegs, function (leg) {
+    const future = new Future();
+    const stationXML = BART_API.getStation(leg.$.trainHeadStation);
+
+    XML_PARSER.getJSON(stationXML, function (stationJSON) {
+      future.return(stationJSON);
+    });
+
+    return future;
+  });
+
+  const response = lodash.map(futures, function (future) {
+    const trainHeadStation = future.wait();
+    return trainHeadStation;
+  });
+
+  return response;
+}, {
+  url: '/api/trainHeadStationData',
+  getArgsFromRequest: function (req) {
+    let scheduledTrips = [];
+    if (req.body != undefined) {
+      scheduledTrips = req.body;
+    }
+    return [scheduledTrips];
+  },
+  httpMethod: 'post',
+});
+
+Meteor.method('getRoutes', function (scheduledTrips) {
+
+  const allLegs = [];
+  lodash.each(scheduledTrips.root.schedule[0].request[0].trip, function (trip) {
+    lodash.each(trip.leg, function (leg) {
+      allLegs.push(leg);
+    });
+  });
+
+  const futures = lodash.map(allLegs, function (leg) {
+    const future = new Future();
+
+    const line = leg.$.line;
+    // "ROUTE XX" - after ROUTE everything
+    const route = line.slice(6);
+    const routeXML = BART_API.getRoute(route);
+    XML_PARSER.getJSON(routeXML, function (routeJSON) {
+      future.return(routeJSON);
+    });
+
+    return future;
+  });
+
+  const response = lodash.map(futures, function (future) {
+    const route = future.wait();
+    return route;
+  });
+
+  return response;
+}, {
+  url: '/api/routes',
+  getArgsFromRequest: function (req) {
+    let scheduledTrips = [];
+    if (req.body != undefined) {
+      scheduledTrips = req.body;
+    }
+    return [scheduledTrips];
+  },
+  httpMethod: 'post',
 });

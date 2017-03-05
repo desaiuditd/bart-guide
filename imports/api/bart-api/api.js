@@ -6,70 +6,57 @@ import { HTTP } from 'meteor/http';
 import { BART_API_CONFIG } from './config.js';
 
 export const BART_API = {
-  getAllStations: function (callback) {
+  getAllStations: function () {
 
-    HTTP.get(BART_API_CONFIG.endpoints.getAllStations.url, {
+    return HTTP.get(BART_API_CONFIG.endpoints.getAllStations.url, {
         params: BART_API_CONFIG.endpoints.getAllStations.params,
-      }, function (err, response) {
-        if (err) {
-          throw new Meteor.Error(err);
-        } else {
-          callback(response.content);
-        }
       }
-    );
+    ).content;
 
   },
-  getStation: function (stn_abbr, callback) {
+  getStation: function (stn_abbr) {
 
     const params = BART_API_CONFIG.endpoints.getStation.params;
     params.orig = stn_abbr;
 
-    HTTP.get(BART_API_CONFIG.endpoints.getStation.url, {
+    return HTTP.get(BART_API_CONFIG.endpoints.getStation.url, {
         params: params,
-      }, function (err, response) {
-        if (err) {
-          throw new Meteor.Error(err);
-        } else {
-          callback(response.content);
-        }
       }
-    );
+    ).content;
 
   },
-  getRealTimeEstimates: function (stn_abbr, callback) {
+  getRealTimeEstimates: function (stn_abbr) {
 
     const params = BART_API_CONFIG.endpoints.getRealTimeEstimates.params;
     params.orig = stn_abbr;
 
-    HTTP.get(BART_API_CONFIG.endpoints.getRealTimeEstimates.url, {
+    return HTTP.get(BART_API_CONFIG.endpoints.getRealTimeEstimates.url, {
         params: params,
-      }, function (err, response) {
-        if (err) {
-          throw new Meteor.Error(err);
-        } else {
-          callback(response.content);
-        }
       }
-    );
+    ).content;
 
   },
-  getScheduledTrips: function (src, dest, callback) {
+  getScheduledTrips: function (src, dest) {
 
     const params = BART_API_CONFIG.endpoints.getScheduledTrips.params;
     params.orig = src;
     params.dest = dest;
 
-    HTTP.get(BART_API_CONFIG.endpoints.getScheduledTrips.url, {
+    return HTTP.get(BART_API_CONFIG.endpoints.getScheduledTrips.url, {
         params: params,
-      }, function (err, response) {
-        if (err) {
-          throw new Meteor.Error(err);
-        } else {
-          callback(response.content);
-        }
       }
-    );
+    ).content;
+
+  },
+  getRoute: function (route) {
+
+    const params = BART_API_CONFIG.endpoints.getRoute.params;
+    params.route = route;
+
+    return HTTP.get(BART_API_CONFIG.endpoints.getRoute.url, {
+        params: params,
+      }
+    ).content;
 
   },
 };

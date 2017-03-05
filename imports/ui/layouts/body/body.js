@@ -2,6 +2,9 @@ import './body.html';
 
 Template.App_body.onRendered(() => {
   $('body').addClass('sidebar-mini skin-bart fixed');
+  $('body').tooltip({
+    selector: '[data-toggle="tooltip"]',
+  });
   $('.content-wrapper').css('margin-bottom', $('.navbar-fixed-bottom').outerHeight());
 });
 
