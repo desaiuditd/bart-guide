@@ -30,7 +30,7 @@ Template.App_station.onRendered(() => {
 
   const stn_abbr = FlowRouter.getParam('stn_abbr');
 
-  HTTP.get('/api/station/?source='+stn_abbr, function (err, response) {
+  HTTP.get('/api/station/'+stn_abbr, function (err, response) {
 
     if(err) {
       console.log(err);

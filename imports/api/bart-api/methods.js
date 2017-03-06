@@ -36,12 +36,12 @@ Meteor.method('getStation', function (stn_abbr) {
 
   return f.wait();
 }, {
-  url: '/api/station',
+  url: '/api/station/:stn_abbr',
   getArgsFromRequest: function (req) {
     let stn_abbr = '';
 
-    if(req.query && req.query.source && typeof req.query.source === 'string' && req.query.source.length > 0) {
-      stn_abbr = req.query.source;
+    if(req.params && req.params.stn_abbr && typeof req.params.stn_abbr === 'string' && req.params.stn_abbr.length > 0) {
+      stn_abbr = req.params.stn_abbr;
     }
 
     return [stn_abbr];
