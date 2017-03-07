@@ -83,7 +83,7 @@ Template.App_trips.helpers({
         markup += '<i class="fa fa-bicycle bg-info" data-toggle="tooltip" title="Bikes are allowed on this train."></i>';
       }
       const load = parseInt(trip.leg[i].$.load);
-      for(let i = 0; i < load; i++) {
+      for(let j = 0; j < load; j++) {
         markup += '<i class="fa fa-user bg-info" data-toggle="tooltip" title="This shows how full the train is at this time."></i>';
       }
       markup += '</span>';
