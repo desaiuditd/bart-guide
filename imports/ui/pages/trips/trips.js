@@ -128,18 +128,8 @@ Template.App_trips.helpers({
     }
     const tripData = Session.get('tripData');
     const realTimestamp = tripData.realTimeEstimates.root.date[0] + ' ' + tripData.realTimeEstimates.root.time;
-    const realDate = moment(realTimestamp, 'MM-DD-YYYY HH:mm:ss').add(parseInt(minutes), 'minutes');
-    return '<span data-countdown="' + moment(realDate).format('YYYY/MM/DD HH:mm:ss') + '"></span>';
-  },
-  initCountdown: function () {
-    setTimeout(function () {
-      $('[data-countdown]').each(function() {
-        var $this = $(this), finalDate = $(this).data('countdown');
-        $this.countdown(finalDate, function(event) {
-          $this.html(event.strftime('%H:%M:%S'));
-        });
-      });
-    }, 100);
+    const realDate = moment(realTimestamp, 'MM-DD-YYYY HH:mm:ss A').add(parseInt(minutes), 'minutes');
+    return '(<span data-countdown="' + moment(realDate).format('YYYY/MM/DD HH:mm:ss A') + '"></span>)';
   },
   legend: function () {
     const tripData = Session.get('tripData');
@@ -162,6 +152,8 @@ Template.App_trips.helpers({
 });
 
 Template.App_trips.onRendered(() => {
+
+  window.countDownIntervalIds = [];
 
   $('#source, #destination').select2({
     placeholder: 'Select Station',
@@ -231,6 +223,27 @@ Template.App_trips.onRendered(() => {
                 }
 
                 Session.set('tripData', tripData);
+
+                setTimeout(function () {
+                  $(window.countDownIntervalIds).each(function (item, i) {
+                    clearInterval(item);
+                  });
+
+                  $('[data-countdown]').each(function() {
+                    var $this = $(this);
+
+                    var finalDate = moment($this.data('countdown'), 'YYYY/MM/DD hh:mm:ss A');
+                    var now = moment(new Date(), 'YYYY/MM/DD hh:mm:ss A');
+                    var diff = finalDate.format('X') - now.format('X');
+                    var duration = moment.duration(diff * 1000, 'milliseconds');
+                    var interval = 1000;
+
+                    window.countDownIntervalIds.push(setInterval(function () {
+                      duration = moment.duration(duration - interval, 'milliseconds');
+                      $this.html(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+                    }, interval));
+                  });
+                }, 100);
               }
             });
           }
@@ -396,6 +409,28 @@ Template.App_trips.events({
                 Session.set('tripData', tripData);
 
                 $('#btn-trip-go').prop('disabled', false).html(preHTML);
+
+                setTimeout(function () {
+                  $(window.countDownIntervalIds).each(function (item, i) {
+                    clearInterval(item);
+                  });
+
+                  $('[data-countdown]').each(function() {
+                    var $this = $(this);
+
+                    var finalDate = moment($this.data('countdown'), 'YYYY/MM/DD HH:mm:ss');
+                    var now = moment(new Date(), 'YYYY/MM/DD HH:mm:ss');
+                    var diff = finalDate.format('X') - now.format('X');
+                    var duration = moment.duration(diff * 1000, 'milliseconds');
+                    var interval = 1000;
+
+                    window.countDownIntervalIds.push(setInterval(function () {
+                      duration = moment.duration(duration - interval, 'milliseconds');
+                      $this.html(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+                    }, interval));
+                  });
+                }, 100);
+
               }
             });
           }

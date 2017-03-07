@@ -57,8 +57,7 @@
                                         </td>
                                         <td>
                                             {{{getRealTimeEstimateMinutes estimate.[0].minutes.[0]}}}
-                                            ({{{getRealTimeCountdown estimate.[0].minutes.[0]}}})
-                                            {{initCountdown}}
+                                            {{{getRealTimeCountdown estimate.[0].minutes.[0]}}}
                                         </td>
                                         <td class="hidden-xs hidden-sm">({{estimate.[0].length}} cars)</td>
                                         <td>From Platform {{estimate.[0].platform}}</td>
@@ -75,13 +74,19 @@
                     <div class="jumbotron">
                         <div class="row">
                             {{{tripMarkup this}}}
-                            <div class="col-sm-1">
+                            <div class="col-sm-1 hidden-xs hidden-sm">
                                 <div class="row">
                                     <a href="#" class="btn-sm btn-block btn-info viewTripMap text-center"
                                        data-toggle="modal" data-target="#tripMapModal"
                                        data-trip-index="{{@index}}">View Map</a>
                                 </div>
                             </div>
+                        </div>
+                        <br />
+                        <div class="row hidden-md hidden-lg">
+                            <a href="#" class="btn-sm btn-block btn-info viewTripMap text-center"
+                               data-toggle="modal" data-target="#tripMapModal"
+                               data-trip-index="{{@index}}">View Map</a>
                         </div>
                     </div>
                 {{/each}}
