@@ -114,7 +114,26 @@ Template.App_trips.helpers({
   },
   realTimeEstimates: function () {
     const tripData = Session.get('tripData');
-    return tripData.realTimeEstimates.root.station[0].etd;
+    return tripData.realTimeEstimates.root.station[0].etd.sort(function (a, b) {
+      var aMin = a.estimate[0].minutes[0];
+      var bMin = b.estimate[0].minutes[0];
+      if (aMin === 'Leaving') {
+        return -1;
+      }
+      if (bMin === 'Leaving') {
+        return 1;
+      }
+
+      if (parseInt(aMin) > parseInt(bMin)) {
+        return 1;
+      }
+
+      if (parseInt(aMin) < parseInt(bMin)) {
+        return -1;
+      }
+
+      return 0;
+    });
   },
   getRealTimeEstimateMinutes: function (minutes) {
     if (minutes === 'Leaving') {
