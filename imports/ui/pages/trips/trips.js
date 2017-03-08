@@ -133,7 +133,7 @@ Template.App_trips.helpers({
       }
 
       return 0;
-    }) : [];
+    }) : null;
   },
   getRealTimeEstimateMinutes: function (minutes) {
     if (minutes === 'Leaving') {
