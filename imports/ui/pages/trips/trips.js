@@ -239,8 +239,10 @@ Template.App_trips.onRendered(() => {
                     var interval = 1000;
 
                     window.countDownIntervalIds.push(setInterval(function () {
-                      duration = moment.duration(duration - interval, 'milliseconds');
-                      $this.html(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+                      if(duration - interval !== 0) {
+                        duration = moment.duration(duration - interval, 'milliseconds');
+                        $this.html(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+                      }
                     }, interval));
                   });
                 }, 100);
@@ -425,8 +427,10 @@ Template.App_trips.events({
                     var interval = 1000;
 
                     window.countDownIntervalIds.push(setInterval(function () {
-                      duration = moment.duration(duration - interval, 'milliseconds');
-                      $this.html(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+                      if(duration - interval !== 0) {
+                        duration = moment.duration(duration - interval, 'milliseconds');
+                        $this.html(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+                      }
                     }, interval));
                   });
                 }, 100);
